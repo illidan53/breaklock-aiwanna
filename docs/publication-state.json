@@ -1,0 +1,11 @@
+{
+  "date": "2026-10-26",
+  "publisherVersion": "0.14.0",
+  "transport": "official stdio MCP via official MCP SDK",
+  "phase": "prepared",
+  "updateId": "4c6aa504-1012-40d3-a6e2-6d6af6914f88",
+  "gameId": null,
+  "gameSlug": null,
+  "buildId": null,
+  "features": { "multilingual": true, "cloudSaves": true, "leaderboards": true, "announcement": false }
+}

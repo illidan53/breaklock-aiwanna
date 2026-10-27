@@ -1,6 +1,6 @@
 import { cp, mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
-import { join, relative, sep } from 'node:path';
+import { extname, join, relative, sep } from 'node:path';
 import { applyI18n, getL10nData, playerDictionary } from './i18n.mjs';
 import { buildFolder, rootFolder } from './paths.mjs';
 import { productionCompiler } from './webpackCompiler.mjs';
@@ -44,9 +44,13 @@ async function build() {
   await cp(join(rootFolder, 'assets'), join(buildFolder, 'assets'), { recursive: true });
   await mkdir(join(buildFolder, 'i18n'));
   // Carry legal notices into the downloadable game, not just its source repo.
-  const rootEntries = await readdir(rootFolder);
-  for (const name of rootEntries.filter(name => /^(LICENSE|NOTICE|THIRD_PARTY|COPYING)([._-]|$)/i.test(name) || /^licenses$/i.test(name))) {
-    await cp(join(rootFolder, name), join(buildFolder, name), { recursive: true });
+  const rootEntries = await readdir(rootFolder, { withFileTypes: true });
+  for (const entry of rootEntries.filter(entry => /^(LICENSE|NOTICE|THIRD_PARTY|COPYING)([._-]|$)/i.test(entry.name) || /^licenses$/i.test(entry.name))) {
+    // The publisher only includes recognized web/text extensions. Keep the
+    // source notices intact and give extensionless notices a .txt export name.
+    // Do not leave excluded copies in dist: every precached file must upload.
+    const exportName = entry.isFile() && !extname(entry.name) ? `${entry.name}.txt` : entry.name;
+    await cp(join(rootFolder, entry.name), join(buildFolder, exportName), { recursive: true });
   }
 
   const router = (await readFile(join(rootFolder, 'src/build/language-router.js'), 'utf8'))

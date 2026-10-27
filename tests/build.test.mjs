@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 import { runInNewContext } from 'node:vm';
+import { posix } from 'node:path';
 import { getL10nData, localizeJavaScript, playerDictionary, replaceTokens } from '../src/build/i18n.mjs';
 
 const dictionaries = await getL10nData();
@@ -69,4 +70,25 @@ test('compiled runtime text keeps local fallbacks and leaves non-player tokens s
   runInNewContext(code, scope);
   assert.deepEqual(Array.from(scope.result), ['Remote "title"', 'abc\\def', 'zh/app.js', 'Start 2']);
   assert.deepEqual(calls, [['name_app', 'Local "title"'], ['button_start', 'Start']]);
+});
+
+test('HTML scripts resolve to the same files in browsers and static publication checks', async () => {
+  const template = await readFile(new URL('../index.html', import.meta.url), 'utf8');
+  const expected = new Set(['language-router.js', ...dictionaries.map(locale => `${locale.code}/bootstrap.js`)]);
+  for (const { code, data } of dictionaries) {
+    const html = replaceTokens(template, { ...dictionaries.find(locale => locale.code === 'en').data, ...data, lang_code: code });
+    const pages = [`${code}/index.html`, ...(code === 'zh' ? ['index.html'] : [])];
+    for (const page of pages) {
+      const pageUrl = new URL(page, 'https://game.example/');
+      const baseUrl = new URL(page === 'index.html' ? './' : '../', pageUrl);
+      const scripts = [...html.matchAll(/<script\b[^>]*\bsrc\s*=\s*["']([^"']+)["']/gi)];
+      assert.equal(scripts.length, 2);
+      for (const [, source] of scripts) {
+        const browserPath = new URL(source, baseUrl).pathname.slice(1);
+        const publisherPath = source.startsWith('/') ? posix.normalize(source).slice(1) : posix.join(posix.dirname(page), source);
+        assert.equal(browserPath, publisherPath, `${page}: ${source} depends on <base> handling`);
+        assert.ok(expected.has(browserPath), `${page}: missing script ${browserPath}`);
+      }
+    }
+  }
 });

@@ -4,7 +4,8 @@
     <title data-i18n="name_app">#@name_app</title>
     <meta name="description" data-i18n-content="description" content="#@description" />
     <base href="../" />
-    <script src="language-router.js"></script>
+    <!-- Root paths also resolve in static publishers that do not interpret <base>. -->
+    <script src="/language-router.js"></script>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
@@ -163,7 +164,7 @@
       <![endif]-->
     </noscript>
 
-    <script src="#@lang_code/bootstrap.js"></script>
+    <script src="/#@lang_code/bootstrap.js"></script>
     <script type="text/javascript">
       // Set up service worker
       if ('serviceWorker' in navigator) {
