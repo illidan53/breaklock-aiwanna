@@ -2,10 +2,75 @@
   "date": "2026-10-26",
   "publisherVersion": "0.14.0",
   "transport": "official stdio MCP via official MCP SDK",
-  "phase": "prepared",
+  "phase": "published-ready",
   "updateId": "4c6aa504-1012-40d3-a6e2-6d6af6914f88",
-  "gameId": null,
-  "gameSlug": null,
-  "buildId": null,
-  "features": { "multilingual": true, "cloudSaves": true, "leaderboards": true, "announcement": false }
+  "gameId": "91ea48d5-85d0-46bb-924d-b4a4a727572e",
+  "gameSlug": "6ac7b2a01196c3347e0eee1236d4506c-a7760a79",
+  "buildId": "5eb9caaa-6346-4f19-ba2e-acdb53f12a7d",
+  "features": {
+    "multilingual": true,
+    "cloudSaves": true,
+    "leaderboards": true,
+    "announcement": false
+  },
+  "gameUrl": "https://www.aiwanna.games/games/6ac7b2a01196c3347e0eee1236d4506c-a7760a79",
+  "cloudSaves": {
+    "enabled": true,
+    "schemaVersion": 1
+  },
+  "boardIds": {
+    "4": "2992dfa1-9f07-48da-b6c2-01b241694bce",
+    "5": "37c082ab-137e-4385-af4f-f8d4c5eb5174",
+    "6": "a2f7933b-be8f-4c41-926e-9e985bd08ab1"
+  },
+  "materials": {
+    "genre": "puzzle",
+    "tags": [
+      "开源移植",
+      "逻辑推理",
+      "图案解锁",
+      "限时挑战"
+    ],
+    "mainCover": "verified",
+    "localizedCovers": "en/ja/ko/es verified",
+    "screenshots": 4,
+    "preview": "not-recorded"
+  },
+  "languageDictionaries": {
+    "original": "zh",
+    "translations": [
+      "en",
+      "ja",
+      "ko",
+      "es"
+    ],
+    "entriesPerLanguage": 74,
+    "state": "ready"
+  },
+  "announcement": "not-published-as-requested",
+  "deploymentId": "dpl_6emo5T5vsA2PFP1iVPjfYyoMCHHW",
+  "tests": {
+    "functional": 84,
+    "build": 7,
+    "passed": true
+  },
+  "artifact": {
+    "files": 119,
+    "bytes": 2197100
+  },
+  "verification": {
+    "productionGuestStart": "passed",
+    "productionGuestRefreshRestore": "passed",
+    "productionLanguages": [
+      "zh",
+      "en",
+      "ja",
+      "ko",
+      "es"
+    ],
+    "productionAccountCloudSync": "pending-browser-login",
+    "productionLeaderboardScore": "pending-browser-login",
+    "multisegmentTouch": "not-tested",
+    "tagTranslations": "still-Chinese-in-English-store"
+  }
 }

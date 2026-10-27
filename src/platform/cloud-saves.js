@@ -11,10 +11,15 @@ const copy = value => JSON.parse(JSON.stringify(value));
 const same = (left, right) => JSON.stringify(left) === JSON.stringify(right);
 
 /**
- * A returned restore-required result contains a candidate in `value`; it has
- * NOT replaced the live game. restoreCloud() applies it only after the player
- * chooses it. useLocal() explicitly keeps AND syncs the current local game.
- * playOffline() can postpone that choice without discarding either version.
+ * Before startup completes, applyState stages the initial save without starting
+ * gameplay. The platform hides the frame until initialize finishes, so an
+ * in-frame restore choice here would deadlock behind its loading screen.
+ * Later, a returned restore-required result contains a candidate in `value`;
+ * restoreCloud() applies it only after the player chooses it. useLocal()
+ * explicitly keeps AND syncs the current local game.
+ * initialize() is the startup barrier. load() may return an attention state
+ * before startup finishes, so its completion alone must not enable gameplay.
+ * playOffline() is for a failed read; an offered save still requires a choice.
  * Local game persistence must work independently of this optional integration.
  * applyState receives { signal }; asynchronous scene restoration must honor it.
  */
@@ -24,15 +29,17 @@ export default function createCloudSync({ config = {}, getState, applyState, onS
   let sdk, unsubscribe, script, scriptTimer, abortScript;
   let startup, sdkReady = false, loading, saving, reading;
   let pending, initialState, initialCaptured = false, destroyed = false;
-  let status = { status: 'local', ready: true, enabled: false, code: 'NOT_CONFIGURED' };
+  let status = configured
+    ? { status: 'loading', ready: false, enabled: true }
+    : { status: 'local', ready: true, enabled: false, code: 'NOT_CONFIGURED' };
   const lifetime = new AbortController();
   const waiters = new Set();
 
   function current() {
     if (!pending) return copy(status);
     return {
-      ...copy(status), status: pending.snoozed ? 'offline' : 'restore-required',
-      ready: false, restoreAvailable: true, localOnly: Boolean(pending.snoozed),
+      ...copy(status), status: 'restore-required',
+      ready: sdkReady, restoreAvailable: true,
       value: copy(pending.value)
     };
   }
@@ -40,7 +47,10 @@ export default function createCloudSync({ config = {}, getState, applyState, onS
   function notify() {
     const result = current();
     try { onStatus(result); } catch { /* UI failures must not break save ownership. */ }
-    if (pending || result.ready || ['offline', 'conflict', 'error', 'incompatible', 'signed-out', 'unsupported'].includes(result.status)) {
+    // Only break an operation's wait when startup needs a player decision.
+    // A ready SDK may emit local/saving/offline while retry is still running;
+    // those notifications must not report that the operation has completed.
+    if (pending || !result.ready && ['offline', 'conflict', 'error', 'incompatible', 'signed-out', 'unsupported'].includes(result.status)) {
       for (const resolve of waiters) resolve(current());
       waiters.clear();
     }
@@ -126,16 +136,18 @@ export default function createCloudSync({ config = {}, getState, applyState, onS
     // An empty cloud slot restores the SDK's initial export. If play advanced
     // while loading, retain it instead of rewinding to that initial export.
     if (same(value, local) || (!sdkReady && same(value, initialState))) return;
-    // The official SDK calls importState while its status is conflict only
-    // after an explicit local/cloud choice (including verified parent commands).
-    if (sdk.getStatus().status === 'conflict') {
+    // The initial save must finish importing before the platform reveals the
+    // frame. The app stages it and starts the scene only after initialize.
+    // Once playing, the official SDK imports from conflict only after an
+    // explicit local/cloud choice (including verified parent commands).
+    if (!sdkReady || sdk.getStatus().status === 'conflict') {
       await applyState(copy(value), { signal: lifetime.signal });
       active();
       return;
     }
     if (pending) throw error('RESTORE_PENDING', 'A save choice is already pending.');
     return new Promise((resolve, reject) => {
-      pending = { value: copy(value), resolve, reject, snoozed: false };
+      pending = { value: copy(value), resolve, reject };
       notify();
     });
   }
@@ -144,7 +156,9 @@ export default function createCloudSync({ config = {}, getState, applyState, onS
     if (pending) return Promise.resolve(current());
     let wake;
     const attention = new Promise(resolve => { wake = resolve; waiters.add(resolve); });
-    return Promise.race([work.then(() => current()), attention]).finally(() => waiters.delete(wake));
+    // SDK ready() can follow an attention notification in the same turn.
+    // Return the newest state, not the earlier not-ready notification.
+    return Promise.race([work, attention]).then(() => current()).finally(() => waiters.delete(wake));
   }
 
   function begin() {
@@ -178,7 +192,8 @@ export default function createCloudSync({ config = {}, getState, applyState, onS
       });
       active();
       sdkReady = true;
-      return current();
+      status = { ...status, ready: true };
+      return notify();
     })();
     // The public operation reports errors without stopping the independent game.
     // Retain the rejected Promise so invalid identity/config cannot restart sync.
@@ -189,10 +204,19 @@ export default function createCloudSync({ config = {}, getState, applyState, onS
     return startup;
   }
 
+  async function initialize() {
+    try {
+      if (!available()) return notify();
+      // Keep the official startup promise pending through read errors and
+      // choices. The UI can resolve them via onStatus, retry and choose.
+      return await begin();
+    } catch (cause) { report(cause); throw cause; }
+  }
+
   async function load() {
     try {
       if (!available()) return notify();
-      if (pending) { pending.snoozed = false; return notify(); }
+      if (pending) return notify();
       if (loading) return await loading;
       if (!startup || !sdkReady) {
         loading = waitForResult(begin());
@@ -256,8 +280,10 @@ export default function createCloudSync({ config = {}, getState, applyState, onS
   async function playOffline() {
     try {
       if (!available()) return notify();
-      if (pending) { pending.snoozed = true; return notify(); }
-      if (!sdk) return { ...current(), localOnly: true };
+      // A later explicit load still needs a choice. Hiding it must not imply
+      // that the suspended import has completed or progress has been saved.
+      if (pending) return { ...current(), code: 'SAVE_CHOICE_REQUIRED' };
+      if (!sdk) return { ...current(), code: 'NOT_READY' };
       return await waitForResult(sdk.playOffline());
     } catch (cause) { return report(cause); }
   }
@@ -276,7 +302,7 @@ export default function createCloudSync({ config = {}, getState, applyState, onS
   }
 
   return {
-    load, save, retry, playOffline, destroy,
+    initialize, load, save, retry, playOffline, destroy,
     restoreCloud: () => choose('cloud'), useLocal: () => choose('local'),
     getStatus: current
   };

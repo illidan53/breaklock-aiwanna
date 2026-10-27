@@ -21,7 +21,7 @@ function deferred() {
   return { promise, resolve, reject };
 }
 
-function fixture({ embedded = true, fetchImpl } = {}) {
+function fixture({ embedded = true, fetchImpl, now = Date.now() } = {}) {
   const time = clock();
   const frame = node();
   const posts = [];
@@ -33,8 +33,11 @@ function fixture({ embedded = true, fetchImpl } = {}) {
   } : frame;
   const calls = [];
   let nextId = 0;
+  let currentTime = now;
+  class FixtureDate extends Date { static now() { return currentTime; } }
   const module = loadSource('src/platform/leaderboards.js', { '../config': config }, {
     window: frame,
+    Date: FixtureDate,
     crypto: { randomUUID: () => 'aaaaaaaa-aaaa-4aaa-8aaa-' + String(++nextId).padStart(12, '0') },
     AbortController,
     setTimeout: time.setTimeout,
@@ -52,13 +55,15 @@ function fixture({ embedded = true, fetchImpl } = {}) {
     emit({ source, origin, data: {
       source: 'aimadegames-platform', type: 'leaderboard-session', requestId,
       apiOrigin: origin,
-      session: { gameId: GAME, token: 'ranking-token', expiresAt: new Date(Date.now() + 3600000).toISOString(), ...session },
+      session: { gameId: GAME, token: 'ranking-token', expiresAt: new Date(currentTime + 3600000).toISOString(), ...session },
       ...data,
     } });
   }
-  return { ...module, frame, posts, calls, time, emit, reply };
+  return { ...module, frame, posts, calls, time, emit, reply, advance: milliseconds => { currentTime += milliseconds; } };
 }
-function response(status, data) { return { ok: status >= 200 && status < 300, status, json: async () => data }; }
+function response(status, data, headers = {}) {
+  return { ok: status >= 200 && status < 300, status, json: async () => data, headers: { get: key => headers[key] ?? null } };
+}
 function roundFixture(overrides = {}, sendImpl) {
   const module = fixture();
   const calls = [];
@@ -78,6 +83,7 @@ test('only a fresh challenge with a configured board and game can create a run',
     { mode: config.GAME.TYPE.PRACTICE }, { mode: config.GAME.TYPE.COUNTDOWN },
     { restored: true }, { difficulty: 3 }, { difficulty: '4' },
     { boardIds: {} }, { boardIds: { 4: 'replace-with-board-id' } },
+    { boardIds: null }, { gameId: BOARDS[4] },
     { boardIds: { 4: '00000000-0000-0000-0000-000000000000' } },
     { request: Object.assign(async () => assert.fail('must not call unconfigured request'), { available: true }) },
   ]) {
@@ -341,4 +347,105 @@ test('cancellation while waiting for identity never sends the request and absolu
   state.reply();
   await rejected;
   assert.equal(state.calls.length, 0);
+});
+
+test('429 Retry-After applies a shared cooldown without automatic requests or delayed round creation', async () => {
+  const now = Date.now();
+  const state = fixture({ now, fetchImpl: async (url, options, count) => count === 1
+    ? response(429, { error: { code: 'RATE_LIMITED' } }, { 'Retry-After': '90' })
+    : response(200, { runId: RUN }) });
+  const request = state.createPlatformRequest({ gameId: GAME });
+  const pending = request('leaderboards/' + BOARDS[4] + '/runs');
+  const rejected = assert.rejects(pending, { code: 'RATE_LIMITED', retryAt: now + 90000, retryAfterMs: 90000 });
+  state.reply();
+  await rejected;
+  assert.equal(state.time.timeouts.size, 0, 'must not schedule a background retry');
+  await assert.rejects(request('leaderboards/' + BOARDS[5] + '/runs'), { code: 'RATE_LIMITED', retryAfterMs: 90000 });
+  state.advance(89999);
+  await assert.rejects(request('runs/' + RUN + '/score'), { code: 'RATE_LIMITED', retryAfterMs: 1 });
+  assert.equal(state.calls.length, 1);
+  assert.equal(state.posts.length, 5);
+  state.advance(1);
+  await request('leaderboards/' + BOARDS[6] + '/runs');
+  assert.equal(state.calls.length, 2);
+});
+
+test('rate limiting accepts HTTP-date values and uses sixty seconds when the header is absent or invalid', async () => {
+  const now = Math.floor(Date.now() / 1000) * 1000;
+  for (const [header, delay] of [
+    [new Date(now + 120000).toUTCString(), 120000], [undefined, 60000], ['bad-date', 60000], ['-1', 60000],
+  ]) {
+    const state = fixture({ now, fetchImpl: async () => ({
+      ...response(429, null, { 'Retry-After': header }), json: async () => { throw new Error('proxy HTML'); },
+    }) });
+    const pending = state.createPlatformRequest({ gameId: GAME })('runs/' + RUN + '/score');
+    const rejected = assert.rejects(pending, { code: 'RATE_LIMITED', retryAfterMs: delay });
+    state.reply();
+    await rejected;
+    assert.equal(state.calls.length, 1);
+    assert.equal(state.time.timeouts.size, 0);
+  }
+});
+
+test('a rate-limited round remains settled locally instead of sending its old result after cooldown', async () => {
+  const state = fixture({ fetchImpl: async () => response(429, { error: { code: 'RATE_LIMITED' } }, { 'Retry-After': '60' }) });
+  const request = state.createPlatformRequest({ gameId: GAME });
+  const round = state.default({ mode: 2, difficulty: 4, boardIds: BOARDS, request });
+  const finish = round.finish({ success: true, attempts: 3 });
+  await flush();
+  state.reply();
+  assert.equal((await finish).code, 'RATE_LIMITED');
+  state.advance(60000);
+  assert.strictEqual(round.finish({ success: true, attempts: 3 }), finish);
+  assert.equal(state.calls.length, 1);
+});
+
+test('verified identity invalidation cancels a pending handshake and blocks reconnecting until reload', async () => {
+  const state = fixture();
+  const request = state.createPlatformRequest({ gameId: GAME });
+  const pending = request('leaderboards/' + BOARDS[4] + '/runs');
+  const rejected = assert.rejects(pending, { code: 'IDENTITY_CHANGED' });
+  request.invalidate();
+  request.invalidate();
+  await rejected;
+  assert.equal(request.available, false);
+  assert.equal(state.frame.listeners.get('message').size, 0);
+  assert.equal(state.time.timeouts.size, 0);
+  state.reply({ session: { token: 'old-account-late-reply' } });
+  await assert.rejects(request('leaderboards/' + BOARDS[4] + '/runs'), { code: 'IDENTITY_CHANGED' });
+  assert.equal(state.calls.length, 0);
+  assert.equal(state.posts.length, 5);
+});
+
+test('identity invalidation aborts in-flight requests and discards a late successful response', async () => {
+  const network = deferred();
+  const state = fixture({ fetchImpl: async () => network.promise });
+  const request = state.createPlatformRequest({ gameId: GAME });
+  const pending = request('runs/' + RUN + '/score');
+  const rejected = assert.rejects(pending, { code: 'IDENTITY_CHANGED' });
+  state.reply();
+  await flush();
+  assert.equal(state.calls.length, 1);
+  request.invalidate();
+  assert.equal(state.calls[0].options.signal.aborted, true);
+  network.resolve(response(200, { accepted: true }));
+  await rejected;
+  assert.equal(state.time.timeouts.size, 0);
+  await assert.rejects(request('leaderboards/' + BOARDS[5] + '/runs'), { code: 'IDENTITY_CHANGED' });
+  assert.equal(state.calls.length, 1);
+});
+
+test('an account change prevents settling an old run and prevents starting new rounds under its token', async () => {
+  const state = fixture();
+  const request = state.createPlatformRequest({ gameId: GAME });
+  const round = state.default({ mode: 2, difficulty: 4, boardIds: BOARDS, request });
+  await flush();
+  state.reply();
+  await flush();
+  assert.equal(state.calls.length, 1);
+  request.invalidate();
+  assert.equal((await round.finish({ success: true, attempts: 2 })).code, 'IDENTITY_CHANGED');
+  const after = state.default({ mode: 2, difficulty: 5, boardIds: BOARDS, request });
+  assert.equal((await after.finish({ success: true, attempts: 1 })).status, 'skipped');
+  assert.equal(state.calls.length, 1);
 });

@@ -1,8 +1,8 @@
 {
   "kind": "local-publication-plan",
-  "status": "pending",
-  "gameId": null,
-  "gameSlug": null,
+  "status": "published",
+  "gameId": "91ea48d5-85d0-46bb-924d-b4a4a727572e",
+  "gameSlug": "6ac7b2a01196c3347e0eee1236d4506c-a7760a79",
   "features": {
     "multilingual": true,
     "cloudSaves": true,
@@ -45,15 +45,15 @@
     "notice": "Community port; not the upstream official release or an endorsement."
   },
   "cloudSaves": {
-    "status": "pending",
+    "status": "enabled-production-account-verification-pending",
     "plannedConfiguration": {
       "enabled": true,
       "schemaVersion": 1
     }
   },
   "leaderboards": {
-    "status": "pending",
-    "minPlayMsStatus": "pending: use the actual integration requirements; no minimum duration has been inferred from game rules.",
+    "status": "configured-production-score-verification-pending",
+    "minPlayMsStatus": "0 confirmed by actual game integration prompt; no time-based scoring rule",
     "plannedConfigurations": [
       {
         "action": "create",
@@ -94,7 +94,7 @@
     ]
   },
   "media": {
-    "status": "reviewed-local",
+    "status": "uploaded-and-visually-verified",
     "mainCover": "cover.png",
     "mainCoverSource": "cover.svg",
     "multilingualBase": "cover-base.png",

@@ -24,8 +24,22 @@ export function createPlatformRequest ({ platformOrigin = PLATFORM_ORIGINS[0], g
   let session = null
   let connecting = null
   let apiOrigin = null
+  let invalidated = false
+  let cancelConnection = null
+  let retryAt = 0
+  const activeRequests = new Set()
+
+  function assertActive (signal) {
+    if (invalidated) throw failure('IDENTITY_CHANGED')
+    if (signal && signal.aborted) throw failure('CANCELLED')
+  }
+
+  function rateLimitError () {
+    return Object.assign(failure('RATE_LIMITED'), { retryAt, retryAfterMs: Math.max(0, retryAt - Date.now()) })
+  }
 
   function connect () {
+    if (invalidated) return Promise.reject(failure('IDENTITY_CHANGED'))
     if (!available) return Promise.reject(failure('UNAVAILABLE'))
     if (session && Date.parse(session.expiresAt) > Date.now() + 60000) return Promise.resolve(session)
     if (connecting) return connecting
@@ -35,7 +49,9 @@ export function createPlatformRequest ({ platformOrigin = PLATFORM_ORIGINS[0], g
       function cleanup () {
         clearTimeout(timer)
         frame.removeEventListener('message', receive)
+        cancelConnection = null
       }
+      cancelConnection = cause => { cleanup(); reject(cause) }
       function receive (event) {
         const data = event.data
         if (event.source !== frame.parent || !PLATFORM_ORIGINS.includes(event.origin) ||
@@ -74,15 +90,19 @@ export function createPlatformRequest ({ platformOrigin = PLATFORM_ORIGINS[0], g
   }
 
   async function request (path, options = {}) {
+    assertActive(options.signal)
     if (!available) throw failure('UNAVAILABLE')
     if (typeof path !== 'string' || !/^[a-z0-9][a-z0-9/-]*$/i.test(path)) throw failure('INVALID_PATH')
     // A 401 refresh retries the exact request, including its idempotency key.
     // Network errors and ambiguous responses never trigger a fresh run.
     for (let retry = 0; retry < 2; retry++) {
-      if (options.signal && options.signal.aborted) throw failure('CANCELLED')
+      assertActive(options.signal)
+      if (retryAt > Date.now()) throw rateLimitError()
       const current = await connect()
-      if (options.signal && options.signal.aborted) throw failure('CANCELLED')
+      assertActive(options.signal)
+      if (retryAt > Date.now()) throw rateLimitError()
       const controller = new AbortController()
+      activeRequests.add(controller)
       const abort = () => controller.abort()
       if (options.signal) options.signal.addEventListener('abort', abort, { once: true })
       const timer = setTimeout(abort, 15000)
@@ -96,12 +116,31 @@ export function createPlatformRequest ({ platformOrigin = PLATFORM_ORIGINS[0], g
           signal: controller.signal,
           headers: { ...options.headers, Authorization: 'Bearer ' + current.token }
         })
-        data = await response.json()
+        try {
+          data = await response.json()
+        } catch (error) {
+          // A proxy may return an HTML 429. Its Retry-After still applies.
+          if (response.status !== 429) throw error
+        }
+      } catch (error) {
+        assertActive(options.signal)
+        throw error
       } finally {
         clearTimeout(timer)
+        activeRequests.delete(controller)
         if (options.signal) options.signal.removeEventListener('abort', abort)
       }
+      assertActive(options.signal)
       if (response.ok) return data
+      if (response.status === 429) {
+        const header = response.headers?.get('Retry-After')
+        const delay = typeof header === 'string' && /^\d+$/.test(header.trim())
+          ? Number(header) * 1000 : Date.parse(header) - Date.now()
+        retryAt = Math.max(retryAt, Date.now() + (Number.isFinite(delay) && delay >= 0 ? delay : 60000))
+        // Do not defer creating a run until after the player has already played,
+        // and never replay a score in the background under a changed account.
+        throw rateLimitError()
+      }
       if (response.status === 401 && data?.error?.code === 'SESSION_EXPIRED' && retry === 0) {
         if (session === current) session = null
         continue
@@ -112,6 +151,18 @@ export function createPlatformRequest ({ platformOrigin = PLATFORM_ORIGINS[0], g
   }
   request.available = available
   request.gameId = gameId
+  // This is a local lifecycle hook, not an invented postMessage protocol.
+  // Call it when the separate, verified cloud identity reports an account change.
+  // The leaderboard protocol exposes no identity-change broadcast of its own.
+  request.invalidate = () => {
+    if (invalidated) return
+    invalidated = true
+    session = null
+    apiOrigin = null
+    request.available = false
+    if (cancelConnection) cancelConnection(failure('IDENTITY_CHANGED'))
+    for (const controller of activeRequests) controller.abort()
+  }
   return request
 }
 
@@ -121,7 +172,7 @@ export function createPlatformRequest ({ platformOrigin = PLATFORM_ORIGINS[0], g
  * Restored games and revealed/failed/abandoned games never publish a score.
  */
 export default function createLeaderboardRound ({ mode, difficulty, restored = false, boardIds = {}, request, platformOrigin, gameId } = {}) {
-  const boardId = boardIds[difficulty]
+  const boardId = boardIds && boardIds[difficulty]
   const skip = reason => ({
     finish: () => Promise.resolve({ status: 'skipped', reason }),
     cancel () {}
@@ -131,6 +182,7 @@ export default function createLeaderboardRound ({ mode, difficulty, restored = f
   }
   const send = request || createPlatformRequest({ platformOrigin, gameId })
   if (typeof send !== 'function' || send.available === false || !isId(gameId || send.gameId) ||
+      (gameId && send.gameId && gameId !== send.gameId) ||
       typeof crypto === 'undefined' || typeof crypto.randomUUID !== 'function') return skip('unavailable')
 
   const controller = new AbortController()
