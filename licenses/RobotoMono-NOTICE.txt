@@ -1,0 +1,27 @@
+Roboto Mono Light
+
+Copyright 2015 Google Inc. All Rights Reserved.
+Licensed under the Apache License, Version 2.0.
+The complete license is included in Apache-2.0.txt.
+
+Files:
+  assets/fonts/robotomono-light-webfont.ttf
+  assets/fonts/robotomono-light-webfont.woff
+  assets/fonts/robotomono-light-webfont.woff2
+
+These files are retained without modification from maxwellito/breaklock,
+revision 8dedd3baccc051928b09605db5cb8dae3702d2f3:
+https://github.com/maxwellito/breaklock/tree/8dedd3baccc051928b09605db5cb8dae3702d2f3/assets/fonts
+
+The TTF and WOFF name tables directly contain the copyright statement above,
+identify Google as the designer, and state:
+  Licensed under the Apache License, Version 2.0
+  http://www.apache.org/licenses/LICENSE-2.0
+
+The WOFF2 file is byte-identical to the corresponding upstream file; its
+compressed name table was not separately decoded during this review.
+SHA-256 hashes and the extracted TTF/WOFF name records are preserved in
+docs/font-provenance.json in the source repository.
+
+The license is established from these particular bundled font binaries.
+It is not inferred from the license of a newer Roboto Mono release.

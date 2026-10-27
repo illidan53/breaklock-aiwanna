@@ -1,0 +1,31 @@
+BreakLock — AIWANNA community port
+
+Based on BreakLock by maxwellito and its contributors.
+Copyright (c) 2017 maxwellito.
+Original source: https://github.com/maxwellito/breaklock
+Upstream revision: 8dedd3baccc051928b09605db5cb8dae3702d2f3
+The upstream MIT license is preserved in LICENSE.
+
+This is a community adaptation for AIWANNA. It is not the upstream official
+release and does not imply sponsorship or endorsement by maxwellito.
+The adaptation updates the build and deployment paths, language routing and
+translations, input/session handling, and optional platform integrations.
+Upstream authorship and contributor credits remain applicable.
+
+Roboto Mono Light font files in assets/fonts/
+Copyright 2015 Google Inc. All Rights Reserved.
+Licensed under the Apache License, Version 2.0.
+The font files are unmodified copies from the upstream revision above.
+See licenses/Apache-2.0.txt and licenses/RobotoMono-NOTICE.txt.
+
+Lucide languages icon in index.html (symbol #icon-lang)
+Copyright (c) 2020, Lucide Contributors.
+Licensed under the ISC License; see licenses/Lucide-ISC.txt.
+The upstream game identifies this icon as originating at lucide.dev.
+The license retained here is the version available when the upstream game
+introduced the icon on 2022-04-25.
+
+Brand names and marks appearing in attribution or sharing links identify
+their respective owners. These notices do not grant trademark rights or
+claim endorsement. See docs/asset-provenance.md for verified sources and
+the limits of the asset review.

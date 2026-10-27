@@ -1,36 +1,23 @@
-name: Build
+name: Build and test
 on:
-  # Trigger the workflow on push or pull request,
-  # but only for the main branch
   push:
-    branches:
-      - main
   pull_request:
-    branches:
-      - main
+permissions:
+  contents: read
 jobs:
-  Build:
+  test-and-build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '24'
-    - name: Build
-      shell: bash
-      run: |
-        npm install
-        npm run build
-    - uses: actions/checkout@v2
-      with:
-        ref: gh-pages
-        path: www
-    - name: Update gh-pages branch
-      run: |
-        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git config --global user.name "github-actions[bot]"
-        cp -rf public/* www
-        cd www
-        git add -A
-        git commit -m 'Autobuild'
-        git push
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm test
+      - run: npm run test:build
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: breaklock-static
+          path: dist/

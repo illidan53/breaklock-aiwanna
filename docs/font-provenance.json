@@ -1,0 +1,34 @@
+{
+  "upstreamCommit": "8dedd3baccc051928b09605db5cb8dae3702d2f3",
+  "fonts": [
+    {
+      "path": "assets/fonts/robotomono-light-webfont.ttf",
+      "sha256": "9206963e376a8cd7e9ac395b7cf27b044decdf68ec29623574c48e8d9687c4ed",
+      "unchanged_from_upstream": true,
+      "name_table": {
+        "0": "Copyright 2015 Google Inc. All Rights Reserved.",
+        "1": "Roboto Mono Light",
+        "9": "Google",
+        "13": "Licensed under the Apache License, Version 2.0",
+        "14": "http://www.apache.org/licenses/LICENSE-2.0"
+      }
+    },
+    {
+      "path": "assets/fonts/robotomono-light-webfont.woff",
+      "sha256": "16c4a973fa17113099d96005aeafca782b328aeafd23dffe476645f18d8f71ed",
+      "unchanged_from_upstream": true,
+      "name_table": {
+        "0": "Copyright 2015 Google Inc. All Rights Reserved.",
+        "1": "Roboto Mono Light",
+        "9": "Google",
+        "13": "Licensed under the Apache License, Version 2.0",
+        "14": "http://www.apache.org/licenses/LICENSE-2.0"
+      }
+    },
+    {
+      "path": "assets/fonts/robotomono-light-webfont.woff2",
+      "sha256": "781b39f985913f1e78f3752aebda80e1a69f204fac2ac2d681ffaad6e7bedea7",
+      "unchanged_from_upstream": true
+    }
+  ]
+}

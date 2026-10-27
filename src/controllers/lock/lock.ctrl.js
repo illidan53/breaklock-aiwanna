@@ -34,6 +34,9 @@ class LockCtrl {
 
     this.el = myPatternSVG.getSVG()
     this.el.setAttribute('class', 'lock')
+    this.el.setAttribute('tabindex', '0')
+    this.el.setAttribute('role', 'group')
+    this.el.setAttribute('aria-label', '#@keyboard_help')
     this.patternEl = myPatternSVG.addGroup({
       'stroke-width': '2',
       'stroke': config.COLORS.BRIGHT,
@@ -50,12 +53,31 @@ class LockCtrl {
    */
   init () {
     // start listening for events (fingers)
-    this.el.addEventListener('touchstart', this.touchStart.bind(this))
-    this.el.addEventListener('touchmove',  this.touchUpdate.bind(this))
+    this.el.addEventListener('touchstart', this.touchStart.bind(this), { passive: false })
+    this.el.addEventListener('touchmove',  this.touchUpdate.bind(this), { passive: false })
     this.el.addEventListener('touchend',   this.touchEnd.bind(this))
+    this.el.addEventListener('touchcancel', this.touchEnd.bind(this))
 
     // start listening for mouse
     this.el.addEventListener('mousedown', this.mouseStart.bind(this))
+    this.el.addEventListener('keydown', this.keyInput.bind(this))
+  }
+
+  keyInput (event) {
+    if (!this.pattern || event.altKey || event.ctrlKey || event.metaKey || event.repeat) return
+    if (event.key === 'Escape' || event.key === 'Backspace') {
+      event.preventDefault()
+      this.reset()
+      return
+    }
+    if (!/^[1-9]$/.test(event.key)) return
+    event.preventDefault()
+    if (this.isPendingReset) this.reset()
+    const index = Number(event.key) - 1
+    this.updatePoint(
+      PatternSVG.prototype.SVG_MARGIN + (index % 3) * PatternSVG.prototype.GRID_GUTTER,
+      PatternSVG.prototype.SVG_MARGIN + Math.floor(index / 3) * PatternSVG.prototype.GRID_GUTTER
+    )
   }
 
   /**
@@ -65,6 +87,7 @@ class LockCtrl {
   setDotLength (dotLength) {
     this.dotLength = dotLength
     this.pattern = new Pattern(this.dotLength)
+    this.reset()
   }
 
   /**
@@ -99,8 +122,8 @@ class LockCtrl {
     t.stopPropagation()
 
     let e = t.currentTarget.getBoundingClientRect(),
-        x = Math.max(0, Math.min(PatternSVG.prototype.SVG_WIDTH, Math.round(PatternSVG.prototype.SVG_WIDTH / e.width  * (t.pageX - e.left)))),
-        y = Math.max(0, Math.min(PatternSVG.prototype.SVG_WIDTH, Math.round(PatternSVG.prototype.SVG_WIDTH / e.height * (t.pageY - e.top ))))
+        x = Math.max(0, Math.min(PatternSVG.prototype.SVG_WIDTH, Math.round(PatternSVG.prototype.SVG_WIDTH / e.width  * (t.clientX - e.left)))),
+        y = Math.max(0, Math.min(PatternSVG.prototype.SVG_WIDTH, Math.round(PatternSVG.prototype.SVG_WIDTH / e.height * (t.clientY - e.top ))))
     
     this.updatePoint(x, y)
   }
@@ -115,7 +138,7 @@ class LockCtrl {
     if (!this.isPendingReset)
       this.reset()
     this.el.removeEventListener('mousemove', this.mouseUpdateBind)
-    window.removeEventListener('mouseout',   this.mouseEndBind)
+    window.removeEventListener('mouseleave', this.mouseEndBind)
     window.removeEventListener('mouseup',    this.mouseEndBind)
   }
 
@@ -141,12 +164,13 @@ class LockCtrl {
    * @param  {Event} t Touch event
    */
   touchUpdate (t) {
+    if (!t.targetTouches.length) return
     t.preventDefault()
     t.stopPropagation()
 
     let e = t.currentTarget.getBoundingClientRect(),
-        x = Math.max(0, Math.min(PatternSVG.prototype.SVG_WIDTH, Math.round(PatternSVG.prototype.SVG_WIDTH / e.width * (t.targetTouches[0].pageX - e.left)))),
-        y = Math.max(0, Math.min(PatternSVG.prototype.SVG_WIDTH, Math.round(PatternSVG.prototype.SVG_WIDTH / e.height * (t.targetTouches[0].pageY - e.top))))
+        x = Math.max(0, Math.min(PatternSVG.prototype.SVG_WIDTH, Math.round(PatternSVG.prototype.SVG_WIDTH / e.width * (t.targetTouches[0].clientX - e.left)))),
+        y = Math.max(0, Math.min(PatternSVG.prototype.SVG_WIDTH, Math.round(PatternSVG.prototype.SVG_WIDTH / e.height * (t.targetTouches[0].clientY - e.top))))
     this.updatePoint(x, y)
   }
 

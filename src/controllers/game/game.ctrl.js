@@ -8,6 +8,7 @@ import config        from '../../config'
 import dom           from '../../utils/dom'
 import color         from '../../utils/color'
 import {pluralize}   from '../../utils/pluralize'
+import validateSaveState from '../../models/save-state'
 
 require('./game.scss');
 
@@ -38,6 +39,14 @@ class GameCtrl {
     this.type      = null
     this.isEnded   = false
     this.onEnd     = onEnd
+    this.onChange  = () => {}
+    this.onRoundStart = () => {}
+    this.onRoundFinish = () => {}
+    this.active = false
+    this.savedHistory = []
+    this.outcome = null
+    this.outcomeCount = 0
+    this.summaryOpen = false
 
     this.statusBar.init()
     this.lock.init()
@@ -70,6 +79,13 @@ class GameCtrl {
    * @param  {int} difficulty Number of dots
    */
   start (type, difficulty) {
+    this.statusBar.stopCountdown()
+    this.summary.toggle(false)
+    this.summaryOpen = false
+    this.active = true
+    this.savedHistory = []
+    this.outcome = null
+    this.outcomeCount = 0
     this.type = type
     this.difficulty = difficulty
     this.lock.setDotLength(difficulty)
@@ -81,12 +97,17 @@ class GameCtrl {
 
     switch (type) {
       case config.GAME.TYPE.PRACTICE:
-        return this.statusBar.setCounter(0)
+        this.statusBar.setCounter(0)
+        break
       case config.GAME.TYPE.CHALLENGE:
-        return this.statusBar.setCounter(10)
+        this.statusBar.setCounter(10)
+        break
       case config.GAME.TYPE.COUNTDOWN:
-        return this.statusBar.setCountdown(60)
+        this.statusBar.setCountdown(60)
+        break
     }
+    this.onRoundStart({ mode: type, difficulty, restored: false })
+    this.onChange()
   }
 
   /**
@@ -112,7 +133,11 @@ class GameCtrl {
         this.statusBar.stopCountdown()
 
       this.isEnded = svgPattern
+      this.outcome = 'win'
+      this.outcomeCount = this.count
+      this.summaryOpen = true
       this.summary.setContent(true, this.count)
+      this.onRoundFinish({ success: true, attempts: this.count })
     }
     else {
       // Fail case
@@ -123,12 +148,18 @@ class GameCtrl {
         case config.GAME.TYPE.CHALLENGE:
           if (this.statusBar.decrementCounter() === 0) {
             this.isEnded = true
+            this.outcome = 'loss'
+            this.outcomeCount = this.count
+            this.summaryOpen = true
             this.summary.setContent(false, this.count)
+            this.onRoundFinish({ success: false, attempts: this.count })
           }
           break
       }
     }
     this.history.stackPattern(svgPattern)
+    this.rememberPattern(pattern, false)
+    this.onChange()
     return isUnlocked
   }
 
@@ -137,16 +168,26 @@ class GameCtrl {
    * @param  {Number} exitCode Exit code from the status bar
    */
   abort (exitCode) {
+    this.statusBar.stopCountdown()
     if (exitCode) {
+      if (this.isEnded) return
       // Exit from countdown
       this.isEnded = true
+      this.outcome = 'loss'
+      this.outcomeCount = this.count
+      this.summaryOpen = true
       this.statusBar.stopCountdown()
       this.summary.setContent(false, this.count)
+      this.onRoundFinish({ success: false, attempts: this.count })
     }
     else {
       // Abort from the user
+      this.isEnded = true
+      this.active = false
+      this.onRoundFinish({ success: false, attempts: this.count })
       this.onEnd()
     }
+    this.onChange()
   }
 
   /**
@@ -165,16 +206,81 @@ class GameCtrl {
       break;
     case config.GAME.ACTIONS.SOLUTION:
       // Nothing for now
-      debugger
       if (this.isEnded === true) {
         let match      = this.pattern.compare(this.pattern)
         let svgPattern = this.buildPatternSVG(this.pattern, match)
         this.history.stackPattern(svgPattern)
+        this.rememberPattern(this.pattern, true)
       }
       this.statusBar.setCounter(this.count)
       break;
     }
-    this.summary.toggle()
+    this.summary.toggle(false)
+    this.summaryOpen = false
+    this.onChange()
+  }
+
+  rememberPattern (pattern, reveal) {
+    this.savedHistory.push({ points: pattern.suite.slice(), reveal })
+    // Bound the cloud document while retaining the total attempt count.
+    if (this.savedHistory.length > 300) this.savedHistory.shift()
+  }
+
+  exportState () {
+    if (!this.active) return { schemaVersion: 1, game: null }
+    return { schemaVersion: 1, game: {
+      type: this.type, difficulty: this.difficulty, solution: this.pattern.suite.slice(),
+      history: this.savedHistory.map(entry => ({ points: entry.points.slice(), reveal: entry.reveal })),
+      count: this.count, outcome: this.outcome, outcomeCount: this.outcomeCount,
+      summaryOpen: this.summaryOpen,
+      remaining: this.type === 3 ? this.statusBar.countdown.remaining : 60,
+      counter: this.statusBar.counterVal || 0
+    } }
+  }
+
+  importState (input) {
+    // Validate everything before changing the live scene or stopping a timer.
+    const state = validateSaveState(input)
+    this.statusBar.stopCountdown()
+    if (this.lock.pattern) this.lock.reset()
+    this.summary.toggle(false)
+    this.active = !!state.game
+    if (!state.game) {
+      this.isEnded = true
+      this.onRoundStart({ restored: true })
+      this.onEnd()
+      return
+    }
+    const game = state.game
+    this.type = game.type
+    this.difficulty = game.difficulty
+    this.count = game.count
+    this.outcome = game.outcome
+    this.outcomeCount = game.outcomeCount
+    this.summaryOpen = game.summaryOpen
+    this.savedHistory = game.history
+    this.pattern = new Pattern(game.difficulty)
+    this.pattern.suite = game.solution
+    this.lock.setDotLength(game.difficulty)
+    this.history.clear('#@connect_first ' + game.difficulty + ' ' + pluralize('#@connect_second', game.difficulty))
+    game.history.forEach(entry => {
+      const attempt = new Pattern(game.difficulty)
+      attempt.suite = entry.points
+      this.history.stackPattern(this.buildPatternSVG(attempt, this.pattern.compare(attempt)))
+    })
+    this.isEnded = game.outcome === 'loss' ? true : game.outcome === 'win'
+      ? this.buildPatternSVG(this.pattern, this.pattern.compare(this.pattern)) : false
+    this.statusBar.setCounter(game.counter)
+    if (game.type === 3) {
+      this.statusBar.setCountdown(60)
+      this.statusBar.countdown.remaining = game.remaining
+      if (game.outcome) this.statusBar.countdown.endCallback = null
+      this.statusBar.countdown.render()
+      if (game.outcome) this.statusBar.stopCountdown()
+    }
+    if (game.summaryOpen) this.summary.setContent(game.outcome === 'win', game.outcomeCount)
+    // A restored answer is never eligible for a fresh leaderboard run.
+    this.onRoundStart({ mode: game.type, difficulty: game.difficulty, restored: true })
   }
 
   /**

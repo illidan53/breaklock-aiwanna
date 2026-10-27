@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="Text-free pattern cover illustration">
+  <title>Text-free pattern cover illustration</title>
+  <desc>Original geometric cover art: nine dots and a six-dot path on a black background. This is not a gameplay screenshot.</desc>
+  <defs>
+    <pattern id="texture" width="32" height="32" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#fff" opacity=".055"/></pattern>
+  </defs>
+  <rect width="1600" height="900" fill="#080808"/>
+  <rect width="1600" height="900" fill="url(#texture)"/>
+  <g fill="none" stroke="#747474" stroke-width="2">
+    <path d="M72 132V72H132 M1468 72H1528V132 M72 768V828H132 M1468 828H1528V768"/>
+  </g>
+  <g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M1030 260H1215V450H1030V640H1215" stroke-width="10"/>
+    <circle cx="1030" cy="260" r="34" stroke-width="2" opacity=".3"/>
+    <circle cx="1215" cy="640" r="34" stroke-width="2" opacity=".3"/>
+  </g>
+  <g fill="#080808" stroke="#fff" stroke-width="6">
+    <circle cx="1030" cy="260" r="17"/>
+    <circle cx="1215" cy="260" r="17"/>
+    <circle cx="1400" cy="260" r="17"/>
+    <circle cx="1030" cy="450" r="17"/>
+    <circle cx="1215" cy="450" r="17"/>
+    <circle cx="1400" cy="450" r="17"/>
+    <circle cx="1030" cy="640" r="17"/>
+    <circle cx="1215" cy="640" r="17"/>
+    <circle cx="1400" cy="640" r="17"/>
+  </g>
+  <g fill="#fff">
+    <circle cx="1030" cy="260" r="5"/><circle cx="1215" cy="260" r="5"/>
+    <circle cx="1030" cy="450" r="5"/><circle cx="1215" cy="450" r="5"/>
+    <circle cx="1030" cy="640" r="5"/><circle cx="1215" cy="640" r="5"/>
+  </g>
+  <g fill="#fff" opacity=".85">
+    <circle cx="147" cy="585" r="10"/><circle cx="181" cy="585" r="10"/>
+  </g>
+  <circle cx="215" cy="585" r="9" fill="none" stroke="#fff" stroke-width="2" opacity=".85"/>
+  <circle cx="249" cy="585" r="10" fill="#555"/>
+</svg>

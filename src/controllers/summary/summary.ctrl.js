@@ -3,6 +3,7 @@ import config from '../../config'
 import dom from '../../utils/dom'
 import airportText from '../../utils/airportText'
 import share from '../../utils/share'
+import platformConfig from '../../platform/config'
 
 require('./summary.scss');
 
@@ -31,6 +32,7 @@ class SummaryCtrl {
     this.onAction = onAction
     this.setupTemplate()
     this.init()
+    this.toggle(false)
   }
 
   /**
@@ -86,7 +88,8 @@ class SummaryCtrl {
    */
   init () {
     this.actionButtons.forEach(btn => btn.addEventListener('click', this.triggerAction.bind(this)));
-    this.shareBtn.addEventListener('click', () => share(config.SOCIAL.MESSAGE, config.URL));
+    this.shareBtn.addEventListener('click', () => share(config.SOCIAL.MESSAGE,
+      platformConfig.gameSlug ? platformConfig.platformOrigin + '/games/' + platformConfig.gameSlug : window.location.href));
   }
 
   /**
@@ -106,6 +109,7 @@ class SummaryCtrl {
     this.revealEl.classList[isSuccess ? 'add' : 'remove']('hide')
 
     this.toggle(true)
+    this.actionButtons[1].focus({ preventScroll: true })
   }
 
   /**
@@ -115,6 +119,8 @@ class SummaryCtrl {
   toggle (force) {
     force = (force != undefined) ? force : !this.el.classList.contains('active')
     this.el.classList[force ? 'add' : 'remove']('active')
+    this.el.inert = !force
+    this.el.setAttribute('aria-hidden', String(!force))
   }
 
   /**

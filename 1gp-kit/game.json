@@ -1,0 +1,29 @@
+{
+  "title": "BreakLock · 图案解锁",
+  "titleEn": "BreakLock",
+  "description": "连起九宫格里的圆点，用每次反馈推理出隐藏图案。\n用鼠标或手指画出路径：白点表示圆点和顺序都对，空心点表示圆点选对、顺序不对。\n从 4、5、6 个点的图案中选择难度，慢慢练习、在 10 次机会内破解，或挑战 60 秒倒计时。\n这是 maxwellito 原作 BreakLock 的 MIT 开源移植版，保留原作署名与许可证。",
+  "descriptionEn": "Connect the dots and use each clue to crack the hidden pattern.\nDraw a path with your mouse or finger. White clues mean the dot and its position are right; hollow clues mean the dot is right but its position is wrong.\nChoose patterns of 4, 5 or 6 dots. Practise without limits, solve a Challenge in 10 attempts, or race a 60-second countdown.\nAn open-source port of BreakLock by maxwellito, under the MIT license. Original credits and license are retained.",
+  "genre": "puzzle",
+  "tags": [
+    "开源移植",
+    "逻辑推理",
+    "图案解锁",
+    "限时挑战"
+  ],
+  "tagsEn": [
+    "Open-source port",
+    "Logical deduction",
+    "Pattern unlocking",
+    "Time challenge"
+  ],
+  "tools": [
+    "Codex"
+  ],
+  "cover": "cover.png",
+  "screenshots": [
+    "gameplay-menu.png",
+    "gameplay-practice.png",
+    "gameplay-win.png",
+    "gameplay-countdown.png"
+  ]
+}

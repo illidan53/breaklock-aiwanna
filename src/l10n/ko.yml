@@ -1,0 +1,78 @@
+airport_charlist: abcdefghijklmnopqrstuvwxyz0123456789 _*%!?#/\\|@
+attribution: 제작 <a href="https://twitter.com/mxwllt"><svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-maxwellito"></use></svg></a> / 소스 <a href="https://github.com/maxwellito/breaklock"><svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-github"></use></svg></a>
+button_abort: 그만하기
+button_easy: 쉬움
+button_hard: 어려움
+button_instructions: 게임 방법
+button_medium: 보통
+button_start: 시작_
+connect_first: 연결할 점
+connect_second: 개
+description: 마스터마인드와 안드로이드 패턴 잠금을 합친, 미워도 자꾸 손이 가는 게임.
+description_black: 점은 맞지만 연결 순서가 틀림
+description_difficulty: 난이도에 따라 연결할 점의 개수가 달라집니다. 쉬움은 4개, 보통은 5개, 어려움은 6개입니다.
+description_game: 점을 연결해 잠금 패턴을 맞혀 보세요. 시도할 때마다 몇 개의 점을 맞혔는지 알려 줍니다.
+description_white: 점도 맞고 연결 순서도 맞음
+feedback_success_first: 잠금 해제! 총
+feedback_success_second: 번 만에 성공.
+feedback_fail: 아쉽지만 이번에는 풀지 못했어요.
+label_success: 성공!
+label_fail: 실패!
+label_goodluck: 행운을 빌어요!_
+lang_code: ko
+mode_challenge: 도전
+mode_challenge_description: 10번 안에 패턴을 맞혀 보세요
+mode_countdown: 카운트다운
+mode_countdown_description: 1분 안에 풀어 보세요. 시도 횟수는 무제한
+mode_practice: 연습
+mode_practice_description: 시간과 횟수 제한 없이 천천히 연습해 보세요
+name_app: BreakLock
+quote_success00: 그냥 운이 좋았을 뿐이에요. 착각하지 마세요.
+quote_success01: 운이 좋았네요. 밤새우지 않아도 돼서요.
+quote_success02: 실력 덕분은 아니에요. 전혀요.
+quote_success03: 승리를 거저 받았네요.
+quote_success04: 방금은 뇌세포를 하나도 안 쓴 것 같은데요.
+quote_success05: 그 점수를 트위터에 올릴 생각은 마세요.
+quote_success06: 휴! 아슬아슬했네요.
+quote_success07: 실력 같네요. 운도 조금 따랐지만요.
+quote_success08: 꽤 잘했어요!
+quote_success09: 그래도 해냈잖아요!
+quote_success10: 아무렇게나 선을 긋는 건 전략이 아니에요…
+quote_success11: 정말 오래 걸렸네요.
+quote_success12: 어쨌든 해냈네요.
+quote_success13: 이제 이 게임이 싫어졌겠네요.
+quote_success14: 반칙은 안 했길 바라요.
+quote_success15: 그 끈기는 인정할게요.
+quote_success16: 논리를 찾을 수 없습니다.
+quote_success17: 할 말이 없네요.
+quote_fail00: 연습이 좀 더 필요하겠네요.
+quote_fail01: 게임 방법은 이해했나요? 기분 나빠하지 마세요. 설명하기도 쉽지 않거든요.
+quote_fail02: 언젠가는 해낼 거예요…
+quote_fail03: 당신은 안 웃기겠지만, 저는 재미있네요 ;)
+quote_fail04: 조급해하지 마세요. 곧 해낼 거예요.
+quote_fail05: 싸우기 싫다면 풀숲에는 들어가지 마세요!
+quote_fail06: 싸움에서 졌어도, 전보다 잘했다면 자신을 이긴 거예요.
+quote_fail07: 게임 오버! 동전을 넣고 다시 도전하세요.
+special_css: <style></style>
+summary_see: 다음 행동을 선택하세요.
+summary_action_solution: 정답 보기
+summary_action_new_game: 새 게임
+summary_action_back_home: 메뉴로
+tweet_feedback: 트위터로 의견을 보내 주세요：
+share: 공유
+cloud_loading: 클라우드 저장 불러오는 중…
+cloud_saved: 클라우드 저장이 동기화되었습니다
+cloud_pending: 클라우드 저장을 찾았습니다. 어느 진행 상황을 이어갈지 선택하세요.
+cloud_conflict: 두 기기의 진행 상황이 다릅니다. 어느 쪽을 유지할지 선택하세요.
+cloud_offline: 현재 진행 상황이 아직 동기화되지 않았습니다. 계속 플레이할 수 있습니다.
+cloud_restore: 클라우드 진행 상황 이어가기
+cloud_keep: 현재 진행 상황 유지 및 동기화
+cloud_retry: 동기화 재시도
+cloud_later: 나중에
+cloud_open: 클라우드 저장
+port_credit: 오픈 소스 이식판 · 원작 maxwellito
+keyboard_help: 키보드 1~9는 왼쪽에서 오른쪽, 위에서 아래 순서로 아홉 점에 대응합니다. Esc를 누르면 다시 그릴 수 있습니다.
+language_label: 언어 선택
+rank_accepted: 점수를 순위표에 제출했습니다
+rank_unavailable: 이번 점수를 업로드하지 못했습니다
+rank_hint: 도전 모드 순위표는 점 개수별로 나뉩니다. 적은 시도로 풀수록 높은 순위에 오릅니다. 클라우드 저장에서 이어 하는 게임은 순위에 반영되지 않습니다.

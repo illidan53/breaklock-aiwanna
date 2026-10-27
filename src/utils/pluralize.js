@@ -27,7 +27,9 @@ const customRussianRule = (choice, choicesLength) => {
 }
 
 const pluralRules = {
-    'ru': customRussianRule
+    'ru': customRussianRule,
+    'en': count => count === 1 ? 0 : 1,
+    'es': count => count === 1 ? 0 : 1
 }
   
 export const pluralize = (word, count) => {

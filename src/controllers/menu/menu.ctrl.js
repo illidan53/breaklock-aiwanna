@@ -84,6 +84,7 @@ class MenuCtrl {
       }
     })();
     const langButton = dom.create('button', 'lang-button', [dom.icon('lang')]);
+    langButton.setAttribute('aria-label', '#@language_label');
     const langSelector = new LangSelectorCtrl();
     langButton.onclick = () => {
       langSelector.el.classList.toggle('disabled');

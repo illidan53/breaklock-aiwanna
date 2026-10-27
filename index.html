@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="#@lang_code">
   <head>
-    <title>#@name_app</title>
-    <meta name="description" content="#@description" />
-    <base href="/breaklock/" />
+    <title data-i18n="name_app">#@name_app</title>
+    <meta name="description" data-i18n-content="description" content="#@description" />
+    <base href="../" />
+    <script src="language-router.js"></script>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
@@ -57,26 +58,6 @@
   </head>
 
   <body>
-    <script type="text/javascript">
-      const isRoot = (() => {
-        const x = window.location.pathname.split('/');
-        while (true) {
-          const y = x.pop();
-          if (y === undefined) return true;
-          if (y.length === 2) return false;
-        }
-      })();
-
-      if (isRoot) {
-        const supported = { fa: true, en: true, zh: true, ru: true, fr: true, pt_br:true, it: true };
-        for (const l of navigator.languages) {
-          if (l === 'en') break;
-          if (supported[l]) {
-            window.location = l;
-          }
-        }
-      }
-    </script>
     <!-- Intro -->
     <p id="app-intro" style="font-family: monospace; color: #fff">
       $ ./breaklock start<br />
@@ -96,20 +77,20 @@
           data="assets/intro.svg"
           type="image/svg+xml"
         ></object>
-        <p>#@description_game</p>
+        <p data-i18n="description_game">#@description_game</p>
         <p></p>
         <table>
           <tr>
             <td style="width: 1.5em">&#9679;</td>
-            <td>#@description_white</td>
+            <td data-i18n="description_white">#@description_white</td>
           </tr>
           <tr>
             <td>&#9675;</td>
-            <td>#@description_black</td>
+            <td data-i18n="description_black">#@description_black</td>
           </tr>
         </table>
-        <p>#@description_difficulty</p>
-        <p>#@label_goodluck</p>
+        <p data-i18n="description_difficulty">#@description_difficulty</p>
+        <p data-i18n="label_goodluck">#@label_goodluck</p>
         <p class="small">#@attribution</p>
       </div>
     </div>
@@ -182,11 +163,13 @@
       <![endif]-->
     </noscript>
 
-    <script src="#@lang_code/app.js"></script>
+    <script src="#@lang_code/bootstrap.js"></script>
     <script type="text/javascript">
       // Set up service worker
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js');
+        navigator.serviceWorker.register(new URL('service-worker.js', document.baseURI).href).catch(function () {
+          // Offline caching is optional; gameplay still works when unavailable.
+        });
       }
 
       // Easter Egg to get it full black

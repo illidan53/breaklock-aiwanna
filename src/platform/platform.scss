@@ -1,0 +1,21 @@
+.port-notes {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px dotted #777;
+  color: #bdbdbd;
+  font-size: .75rem;
+  line-height: 1.7;
+  max-width: 42em;
+}
+.port-notes p { margin: .7em 0; }
+:focus-visible { outline: 2px solid #fff !important; outline-offset: 5px; }
+button:disabled { opacity: .5; cursor: wait; }
+[hidden] { display: none !important; }
+.cloud-open { position: fixed; right: 1rem; bottom: .5rem; z-index: 10; background: #161616; border: 1px solid #777; padding: .5rem; font-size: .7rem; }
+.cloud-panel { position: fixed; z-index: 20; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(480px, calc(100% - 3rem)); padding: 1rem; box-sizing: border-box; border: 1px solid white; background: #161616; box-shadow: 0 0 0 100vmax #0009; font-size: .85rem; }
+.cloud-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+.cloud-actions button { border: 1px solid #999; min-height: 44px; padding: .4rem .75rem; }
+.ranking-status { font-size: .8rem; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

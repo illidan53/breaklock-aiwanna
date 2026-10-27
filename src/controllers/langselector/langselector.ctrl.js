@@ -14,6 +14,10 @@ class LangSelector {
       { value: 'en', label: 'English' },
       { value: 'fa', label: 'فارسی' },
       { value: 'zh', label: '简体中文' },
+      { value: 'zh-tw', label: '繁體中文' },
+      { value: 'ja', label: '日本語' },
+      { value: 'ko', label: '한국어' },
+      { value: 'es', label: 'Español' },
       { value: 'ru', label: 'Русский' },
       { value: 'fr', label: 'Français' },
       { value: 'pt_br', label: 'Português Brasileiro' },
@@ -34,8 +38,12 @@ class LangSelector {
   setChoices (choiceList) {
     let div = dom.create('div');
     choiceList.forEach((choice) => {
+      const target = new URL(document.baseURI);
+      target.search = window.location.search;
+      target.hash = window.location.hash;
+      target.searchParams.set('lang', choice.value);
       let option = dom.create('a', {
-        href: choice.value,
+        href: target.href,
       }, choice.label);
       div.appendChild(option);
       div.appendChild(dom.create('br'));

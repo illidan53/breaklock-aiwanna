@@ -1,0 +1,78 @@
+airport_charlist: abcdefghijklmnopqrstuvwxyz0123456789 _*%!?#/\\|@
+attribution: 作者 <a href="https://twitter.com/mxwllt"><svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-maxwellito"></use></svg></a> / ソース <a href="https://github.com/maxwellito/breaklock"><svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-github"></use></svg></a>
+button_abort: やめる
+button_easy: かんたん
+button_hard: むずかしい
+button_instructions: 遊び方
+button_medium: ふつう
+button_start: スタート_
+connect_first: つなぐ点は
+connect_second: 個
+description: マスターマインドと Android のパターンロックを組み合わせた、悔しいけれどやめられないゲーム。
+description_black: 選んだ点は正解だが、つなぐ順番が違う
+description_difficulty: 難易度によって、つなぐ点の数が変わります。かんたんは 4 個、ふつうは 5 個、むずかしいは 6 個です。
+description_game: 点をつないで、ロックのパターンを当てましょう。試すたびに、正しい点がいくつあったかが表示されます。
+description_white: 選んだ点も、つなぐ順番も正しい
+feedback_success_first: ロック解除！
+feedback_success_second: 回で成功。
+feedback_fail: 残念、今回は解けませんでした。
+label_success: 成功！
+label_fail: 失敗！
+label_goodluck: がんばって！_
+lang_code: ja
+mode_challenge: チャレンジ
+mode_challenge_description: 10 回以内にパターンを当てよう
+mode_countdown: カウントダウン
+mode_countdown_description: 1 分以内に解こう。試せる回数は無制限
+mode_practice: 練習
+mode_practice_description: 時間も回数も気にせず、じっくり練習しよう
+name_app: BreakLock
+quote_success00: ただのまぐれだよ。夢を見すぎないで。
+quote_success01: 運がよかったね。徹夜せずに済んだ。
+quote_success02: 実力じゃない。まったくね。
+quote_success03: 勝ちをお膳立てしてもらったね。
+quote_success04: 今のゲーム、脳細胞を一つも使ってないでしょ。
+quote_success05: そのスコアをツイートしようなんて思わないでね。
+quote_success06: おっと！危なかったね。
+quote_success07: 実力に見えるね。運も少しあったけど。
+quote_success08: なかなかいいね！
+quote_success09: でも、解けたじゃない！
+quote_success10: でたらめに線を引くのは作戦じゃないよ…
+quote_success11: ながーかったね。
+quote_success12: とにかく解けたね。
+quote_success13: もうこのゲームが嫌いになったんじゃない？
+quote_success14: ズルしてないといいけど。
+quote_success15: その粘り強さには感心するよ。
+quote_success16: 論理が見つかりません。
+quote_success17: ノーコメント。
+quote_fail00: もう少し練習が必要みたいだね。
+quote_fail01: 遊び方はわかった？気にしないで、説明するのも難しいんだ。
+quote_fail02: いつかきっと解けるよ…
+quote_fail03: 君には笑えないだろうけど、こっちは楽しいよ ;)
+quote_fail04: 焦らないで。そのうち解けるよ。
+quote_fail05: 戦いたくなければ、草むらには入らないこと！
+quote_fail06: 戦いに負けても、前よりうまくできたなら、自分には勝ったんだ。
+quote_fail07: ゲームオーバー！コインを入れて、もう一度。
+special_css: <style></style>
+summary_see: 次の操作を選んでください。
+summary_action_solution: 答えを見る
+summary_action_new_game: もう一度
+summary_action_back_home: メニューへ
+tweet_feedback: Twitter で感想をどうぞ：
+share: 共有
+cloud_loading: クラウドセーブを読み込み中…
+cloud_saved: クラウドセーブを同期しました
+cloud_pending: クラウドセーブが見つかりました。どちらの進行状況で続けるか選んでください。
+cloud_conflict: 端末間で進行状況が異なります。どちらを残すか選んでください。
+cloud_offline: 現在の進行状況はまだ同期されていません。そのまま遊べます。
+cloud_restore: クラウドの進行状況で続ける
+cloud_keep: 現在の進行状況を残して同期
+cloud_retry: 同期を再試行
+cloud_later: あとで
+cloud_open: クラウドセーブ
+port_credit: オープンソース移植版 · 原作 maxwellito
+keyboard_help: キーの 1〜9 は、左から右、上から下の順に九つの点に対応します。Esc で引き直せます。
+language_label: 言語を選ぶ
+rank_accepted: スコアをランキングに送信しました
+rank_unavailable: 今回のスコアを送信できませんでした
+rank_hint: チャレンジのランキングは点の数ごとに分かれています。少ない試行回数ほど上位になります。クラウドセーブから再開したゲームはランキング対象外です。

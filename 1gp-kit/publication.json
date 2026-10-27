@@ -1,0 +1,119 @@
+{
+  "kind": "local-publication-plan",
+  "status": "pending",
+  "gameId": null,
+  "gameSlug": null,
+  "features": {
+    "multilingual": true,
+    "cloudSaves": true,
+    "leaderboards": true,
+    "announcement": false
+  },
+  "storeDetails": {
+    "titles": {
+      "zh": "BreakLock · 图案解锁",
+      "en": "BreakLock",
+      "ja": "BreakLock · パターン解読",
+      "ko": "BreakLock · 패턴 해독",
+      "es": "BreakLock · Descifra el patrón"
+    },
+    "descriptions": {
+      "zh": "连起九宫格里的圆点，用每次反馈推理出隐藏图案。\n用鼠标或手指画出路径：白点表示圆点和顺序都对，空心点表示圆点选对、顺序不对。\n从 4、5、6 个点的图案中选择难度，慢慢练习、在 10 次机会内破解，或挑战 60 秒倒计时。\n这是 maxwellito 原作 BreakLock 的 MIT 开源移植版，保留原作署名与许可证。",
+      "en": "Connect the dots and use each clue to crack the hidden pattern.\nDraw a path with your mouse or finger. White clues mean the dot and its position are right; hollow clues mean the dot is right but its position is wrong.\nChoose patterns of 4, 5 or 6 dots. Practise without limits, solve a Challenge in 10 attempts, or race a 60-second countdown.\nAn open-source port of BreakLock by maxwellito, under the MIT license. Original credits and license are retained.",
+      "ja": "点をつなぎ、ヒントを頼りに隠されたパターンを解き明かそう。\nマウスや指で線を引きます。白いヒントは点も順番も正解、白い輪のヒントは点は正しくても順番が違うことを表します。\n難易度は4・5・6個の点から選択。じっくり練習するもよし、10回以内の解読や60秒のタイムアタックに挑むもよし。\nmaxwellitoによるBreakLockのオープンソース移植版です。原作のMITライセンスとクレジットを保持しています。",
+      "ko": "점을 잇고 힌트를 추리해 숨겨진 패턴을 풀어 보세요.\n마우스나 손가락으로 경로를 그립니다. 흰색 힌트는 점과 순서가 모두 맞다는 뜻이고, 속이 빈 원 모양의 힌트는 점은 맞지만 순서가 다르다는 뜻입니다.\n점 4개, 5개, 6개 중 난이도를 고르세요. 제한 없이 연습하거나, 10번 안에 풀기에 도전하거나, 60초 카운트다운을 즐길 수 있습니다.\nmaxwellito의 BreakLock을 MIT 라이선스에 따라 이식한 오픈 소스 버전입니다. 원작의 저작자 표시와 라이선스를 유지합니다.",
+      "es": "Une los puntos y usa las pistas para descifrar el patrón oculto.\nTraza un recorrido con el ratón o el dedo. Una pista blanca indica un punto correcto en la posición correcta; una hueca, un punto correcto en otra posición.\nElige patrones de 4, 5 o 6 puntos. Practica sin límites, resuelve el Desafío en 10 intentos o juega contrarreloj durante 60 segundos.\nAdaptación de código abierto de BreakLock, de maxwellito, bajo la licencia MIT. Se conservan los créditos y la licencia originales."
+    },
+    "genre": "puzzle",
+    "tags": [
+      "开源移植",
+      "逻辑推理",
+      "图案解锁",
+      "限时挑战"
+    ],
+    "fillMissing": true
+  },
+  "source": {
+    "originalAuthor": "maxwellito",
+    "originalRepository": "https://github.com/maxwellito/breaklock",
+    "originalRevision": "8dedd3baccc051928b09605db5cb8dae3702d2f3",
+    "codeLicense": "MIT",
+    "portRepository": {
+      "url": "https://github.com/illidan53/breaklock-aiwanna",
+      "status": "created-pending-push"
+    },
+    "notice": "Community port; not the upstream official release or an endorsement."
+  },
+  "cloudSaves": {
+    "status": "pending",
+    "plannedConfiguration": {
+      "enabled": true,
+      "schemaVersion": 1
+    }
+  },
+  "leaderboards": {
+    "status": "pending",
+    "minPlayMsStatus": "pending: use the actual integration requirements; no minimum duration has been inferred from game rules.",
+    "plannedConfigurations": [
+      {
+        "action": "create",
+        "board": {
+          "key": "challenge-4",
+          "name": "挑战 · 4 个点",
+          "description": "4 点挑战模式成功解锁所用次数，越少越好。仅计新开且完成的挑战局，云存档恢复的局不参榜。",
+          "order": "asc",
+          "unit": "count",
+          "minScore": 1,
+          "maxScore": 10
+        }
+      },
+      {
+        "action": "create",
+        "board": {
+          "key": "challenge-5",
+          "name": "挑战 · 5 个点",
+          "description": "5 点挑战模式成功解锁所用次数，越少越好。仅计新开且完成的挑战局，云存档恢复的局不参榜。",
+          "order": "asc",
+          "unit": "count",
+          "minScore": 1,
+          "maxScore": 10
+        }
+      },
+      {
+        "action": "create",
+        "board": {
+          "key": "challenge-6",
+          "name": "挑战 · 6 个点",
+          "description": "6 点挑战模式成功解锁所用次数，越少越好。仅计新开且完成的挑战局，云存档恢复的局不参榜。",
+          "order": "asc",
+          "unit": "count",
+          "minScore": 1,
+          "maxScore": 10
+        }
+      }
+    ]
+  },
+  "media": {
+    "status": "reviewed-local",
+    "mainCover": "cover.png",
+    "mainCoverSource": "cover.svg",
+    "multilingualBase": "cover-base.png",
+    "multilingualBaseSource": "cover-base.svg",
+    "illustration": true,
+    "gameplayScreenshot": false,
+    "screenshots": {
+      "status": "captured",
+      "paths": [
+        "gameplay-menu.png",
+        "gameplay-practice.png",
+        "gameplay-win.png",
+        "gameplay-countdown.png"
+      ],
+      "source": "Unmodified screenshots of actual browser gameplay; no game-state injection."
+    },
+    "preview": {
+      "status": "not-recorded",
+      "reason": "Available browser tools do not expose gameplay video recording."
+    }
+  }
+}

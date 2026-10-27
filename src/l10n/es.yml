@@ -1,0 +1,78 @@
+airport_charlist: abcdefghijklmnopqrstuvwxyz0123456789 _*%!?#/\\|@
+attribution: Creado por <a href="https://twitter.com/mxwllt"><svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-maxwellito"></use></svg></a> / Código en <a href="https://github.com/maxwellito/breaklock"><svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-github"></use></svg></a>
+button_abort: SALIR
+button_easy: Fácil
+button_hard: Difícil
+button_instructions: INSTRUCCIONES
+button_medium: Media
+button_start: EMPEZAR_
+connect_first: Conecta
+connect_second: puntos
+description: Una mezcla de Mastermind y el bloqueo por patrón de Android. Un juego que te encantará odiar.
+description_black: el punto está en el patrón, pero en el orden equivocado
+description_difficulty: La dificultad determina cuántos puntos debes conectar. Fácil son 4 puntos, media son 5 y difícil son 6.
+description_game: Une los puntos para descubrir el patrón de desbloqueo. Tras cada intento, el juego te dirá cuántos puntos has acertado.
+description_white: el punto está en el patrón y en el orden correcto
+feedback_success_first: Patrón descubierto en
+feedback_success_second: intento. | intentos.
+feedback_fail: Lo siento, esta vez no lo has conseguido.
+label_success: ¡Éxito!
+label_fail: ¡Fallaste!
+label_goodluck: ¡Buena suerte!_
+lang_code: es
+mode_challenge: Desafío
+mode_challenge_description: Descubre el patrón en un máximo de 10 intentos
+mode_countdown: Contrarreloj
+mode_countdown_description: Resuelve el patrón en un minuto, sin límite de intentos
+mode_practice: Práctica
+mode_practice_description: Sin límite de tiempo ni de intentos. Explora y practica a tu ritmo
+name_app: BreakLock
+quote_success00: Pura suerte, nada más. Deja de soñar.
+quote_success01: Has tenido suerte y no has pasado la noche en vela.
+quote_success02: Ningún mérito. Absolutamente ninguno.
+quote_success03: Te lo han servido en bandeja.
+quote_success04: No has usado ni una sola neurona en esta partida.
+quote_success05: Ni se te ocurra tuitear tu puntuación.
+quote_success06: ¡Caramba! ¡Por poco!
+quote_success07: Parece habilidad, con un poco de suerte.
+quote_success08: ¡Bastante bien!
+quote_success09: ¡Pero lo has conseguido!
+quote_success10: Probar patrones al azar no es una estrategia…
+quote_success11: Se ha hecho laaaargo.
+quote_success12: Al menos lo has conseguido.
+quote_success13: A estas alturas debes odiar este juego.
+quote_success14: Espero que no hayas hecho trampas.
+quote_success15: Tu perseverancia es impresionante.
+quote_success16: Lógica no encontrada.
+quote_success17: Sin comentarios.
+quote_fail00: Creo que aún te queda trabajo por hacer.
+quote_fail01: ¿Has entendido el juego? No te lo tomes a mal, me cuesta explicarlo.
+quote_fail02: Algún día lo conseguirás…
+quote_fail03: A ti no te hace gracia, pero a mí sí ;)
+quote_fail04: No te agobies, lo conseguirás.
+quote_fail05: ¡Si quieres evitar combates, aléjate de la hierba alta!
+quote_fail06: Aunque pierdas la batalla, si lo has hecho mejor que antes, te has superado.
+quote_fail07: ¡TILT! Inserta una moneda e inténtalo de nuevo.
+special_css: <style></style>
+summary_see: Elige una opción.
+summary_action_solution: VER_SOLUCIÓN
+summary_action_new_game: NUEVA_PARTIDA
+summary_action_back_home: VOLVER_AL_MENÚ
+tweet_feedback: Envíame tus comentarios en Twitter a
+share: Compartir
+cloud_loading: Cargando partida en la nube…
+cloud_saved: Partida sincronizada con la nube
+cloud_pending: Se ha encontrado una partida en la nube. Elige qué progreso quieres continuar.
+cloud_conflict: El progreso es distinto en los dos dispositivos. Elige qué versión quieres conservar.
+cloud_offline: Tu progreso aún no se ha sincronizado. Puedes seguir jugando.
+cloud_restore: Continuar partida de la nube
+cloud_keep: Conservar el progreso actual y sincronizar
+cloud_retry: Reintentar sincronización
+cloud_later: Más tarde
+cloud_open: Partida en la nube
+port_credit: Adaptación de código abierto · Original de maxwellito
+keyboard_help: Las teclas 1–9 corresponden a los nueve puntos, de izquierda a derecha y de arriba abajo. Pulsa Esc para volver a dibujar.
+language_label: Elegir idioma
+rank_accepted: Puntuación enviada a la clasificación
+rank_unavailable: No se ha podido subir esta puntuación
+rank_hint: Las clasificaciones del modo Desafío se separan por número de puntos. Cuantos menos intentos uses, mejor. Las partidas recuperadas de la nube no cuentan para la clasificación.

@@ -14,7 +14,7 @@ description_difficulty: The difficulty setting changes the amount of dots to con
 description_game: Link the dots to find the lock pattern. After every attempt the game will tell you how many dots you got right.
 description_white: a dot occurs in the pattern and is in the correct order
 feedback_success_first: Lock found in
-feedback_success_second: attempts.
+feedback_success_second: attempt. | attempts.
 feedback_fail: Sorry, you didn\'t make it this time.
 label_success: Success!
 label_fail: Fail!
@@ -61,3 +61,19 @@ summary_action_new_game: NEW_GAME
 summary_action_back_home: BACK_HOME
 tweet_feedback: Tweet me your feedback at
 share: Share
+cloud_loading: Loading cloud save…
+cloud_saved: Cloud save synced
+cloud_pending: A cloud save was found. Choose which progress to continue.
+cloud_conflict: Progress differs between devices. Choose which version to keep.
+cloud_offline: This progress has not synced yet. You can keep playing.
+cloud_restore: Continue cloud progress
+cloud_keep: Keep current progress and sync
+cloud_retry: Retry sync
+cloud_later: Later
+cloud_open: Cloud save
+port_credit: Open-source port · Original by maxwellito
+keyboard_help: Keys 1–9 select the nine dots from left to right, top to bottom. Press Esc to redraw.
+language_label: Choose language
+rank_accepted: Score submitted to the leaderboard
+rank_unavailable: This score could not be uploaded
+rank_hint: Challenge leaderboards are grouped by the number of dots. Fewer attempts rank higher. Games restored from cloud saves are not ranked.

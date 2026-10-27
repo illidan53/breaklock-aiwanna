@@ -1,5 +1,5 @@
 airport_charlist: abcdefghijklmnopqrstuvwxyz0123456789 _*%!?#/\\|@
-attribution: 作者 <a href="https://twitter.com/mxwllt"><svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-maxwellito"></use></svg></a> / Github仓库 <a href="https://github.com/maxwellito/breaklock"><svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-github"></use></svg></a>
+attribution: 作者 <a href="https://twitter.com/mxwllt"><svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-maxwellito"></use></svg></a> / GitHub 仓库 <a href="https://github.com/maxwellito/breaklock"><svg class="icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-github"></use></svg></a>
 button_abort: 放弃
 button_easy: 简单
 button_hard: 困难
@@ -8,12 +8,12 @@ button_medium: 中等
 button_start: 开始_
 connect_first: 连接
 connect_second: 个点
-description: 一款结合头脑风暴和安卓图案锁的游戏，一款让你爱恨交加的游戏。
-description_black: 位置正确但顺序错误
-description_difficulty: 不同难度要连接点的数量不同。简单4个，中等5个，困难6个。
-description_game: 把这些点连起来，找到解锁图案。每次尝试之后，游戏都会告诉你有多少点是正确的。
-description_white: 位置和顺序都正确
-feedback_success_first: 成功解锁！
+description: 把猜密码游戏 Mastermind 和安卓图案锁结合起来，让你又爱又恨。
+description_black: 点选对了，但连接顺序不对
+description_difficulty: 难度决定要连接几个点：简单 4 个，中等 5 个，困难 6 个。
+description_game: 连起圆点，猜出解锁图案。每次尝试后，游戏都会提示有几个点选对了。
+description_white: 点选对了，连接顺序也正确
+feedback_success_first: 成功解锁，用了
 feedback_success_second: 次尝试。
 feedback_fail: 很遗憾，你失败了。
 label_success: 成功！
@@ -21,42 +21,58 @@ label_fail: 失败！
 label_goodluck: 祝好运！
 lang_code: zh
 mode_challenge: 挑战模式
-mode_challenge_description: 挑战模式只有十次尝试机会
+mode_challenge_description: 在 10 次尝试内猜出图案
 mode_countdown: 计时模式
-mode_countdown_description: 不限尝试次数一分钟内解锁
+mode_countdown_description: 在 1 分钟内解锁，尝试次数不限
 mode_practice: 练习模式
-mode_practice_description: 无限制的练习
+mode_practice_description: 不限时间和次数，慢慢摸索，尽情练习
 name_app: BreakLock
-quote_success00: 纯粹运气，别做梦了。
-quote_success01: 你很幸运，没有熬夜。
-quote_success02: 没有价值，绝对没有。
-quote_success03: 那是用金盘子装着的。
-quote_success04: 刚那局游戏绝对没经过大脑。
-quote_success05: 甚至不敢公布你的成绩。
-quote_success06: 卧槽！差一点。
-quote_success07: 似乎不错，有点运气。
+quote_success00: 纯属运气，别想太多。
+quote_success01: 运气不错，没让你熬个通宵。
+quote_success02: 这可算不上本事，一点也算不上。
+quote_success03: 白送的胜利。
+quote_success04: 刚才这局，你一个脑细胞都没动吧。
+quote_success05: 可别把这成绩发到网上。
+quote_success06: 哎呀，好险！
+quote_success07: 看起来像实力，也有点运气。
 quote_success08: 很好！
-quote_success09: 但是你成功了！
+quote_success09: 不过，你还是成功了！
 quote_success10: 乱画不是一种策略…
-quote_success11: 太慢了！
+quote_success11: 可真够久的。
 quote_success12: 至少你成功了。
 quote_success13: 你现在一定很讨厌这个游戏。
 quote_success14: 希望你没有作弊。
-quote_success15: 你的付出令人感动。
+quote_success15: 这份毅力，服了。
 quote_success16: 找不到逻辑。
 quote_success17: 无话可说。
-quote_fail00: 我相信还有一些工作要做。
-quote_fail01: 你懂这个游戏吗？别当真，我很难解释。
+quote_fail00: 看来还得再练练。
+quote_fail01: 你弄懂玩法了吗？别介意，也可能是我没讲清楚。
 quote_fail02: 总有一天你会成功的…
-quote_fail03: 这对你来说并不好笑，但对我来说却是如此 ;)
+quote_fail03: 你可能觉得不好笑，但我觉得挺好笑的 ;)
 quote_fail04: 别紧张，你会成功的。
 quote_fail05: 如果你想避免战斗，那就远离草地吧！
-quote_fail06: 即使你在战斗中失败了，如果你超越了从前，你也战胜了自己。
-quote_fail07: 投币重试
+quote_fail06: 就算这次输了，只要比上次做得更好，你就战胜了自己。
+quote_fail07: 出局！投币再来一次。
 special_css: <style></style>
 summary_see: 请选择一个选项。
-summary_action_solution: 解决方案
+summary_action_solution: 查看答案
 summary_action_new_game: 新游戏
-summary_action_back_home: 返回
-tweet_feedback: 反馈
+summary_action_back_home: 返回菜单
+tweet_feedback: 在 Twitter 上向我反馈：
 share: 分享
+cloud_loading: 正在读取云存档…
+cloud_saved: 云存档已同步
+cloud_pending: 发现云存档，请选择要继续的进度。
+cloud_conflict: 两个设备的进度不同，请选择保留哪份。
+cloud_offline: 当前进度尚未同步，可继续游玩。
+cloud_restore: 继续云端进度
+cloud_keep: 保留当前进度并同步
+cloud_retry: 重试同步
+cloud_later: 稍后再说
+cloud_open: 云存档
+port_credit: 开源移植 · 原作 maxwellito
+keyboard_help: 键盘 1–9 对应从左到右、从上到下的九个点，Esc 重画。
+language_label: 选择语言
+rank_accepted: 成绩已提交排行榜
+rank_unavailable: 本局成绩未能上传
+rank_hint: 挑战模式按点数分榜，尝试次数越少越好。云存档恢复的局不计入排行榜。

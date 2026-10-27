@@ -1,7 +1,12 @@
 import webpack from "webpack";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import path from "path";
-import { rootFolder } from "./paths.mjs";
+import * as sass from 'sass';
+import { buildFolder, rootFolder } from "./paths.mjs";
+import { getL10nData, playerDictionary } from './i18n.mjs';
+
+const english = (await getL10nData()).find(locale => locale.code === 'en');
+if (!english) throw new Error('English fallback dictionary is required');
 
 const extractSass = new MiniCssExtractPlugin({
   filename: "[name].css",
@@ -11,10 +16,11 @@ const config = {
   context: path.resolve(rootFolder, './src'),
   entry: {
     app: './app.js',
+    bootstrap: './platform/i18n-bootstrap.js',
   },
   output: {
-    path: path.resolve(rootFolder, './public'),
-    filename: 'app.js',
+    path: buildFolder,
+    filename: '[name].js',
   },
   module: {
     rules: [
@@ -35,13 +41,17 @@ const config = {
             loader: 'css-loader',
             options: { url: false },
           },
-          'sass-loader',
+          {
+            loader: 'sass-loader',
+            options: { implementation: sass, api: 'modern' },
+          },
         ],
       }
     ]
   },
   plugins: [
-    extractSass
+    extractSass,
+    new webpack.DefinePlugin({ __BREAKLOCK_I18N_KEYS__: JSON.stringify(Object.keys(playerDictionary(english.data))) }),
   ]
 };
 
