@@ -1,6 +1,6 @@
 # BreakLock 上架计划
 
-状态：**pending**。本目录只准备本地物料；尚未取得真实游戏 ID、gameSlug 或榜单 ID，不能视为已上传、已上线或已接通云服务。
+状态：**pending**。本目录只准备本地物料；尚未取得真实游戏 ID、gameSlug 或榜单 ID，不能视为已上传到 1GP、已上线或已接通云服务。
 
 用户已选择多语言、云存档和排行榜，明确只上架游戏、不发社区帖：`announcement: false`。本计划不包含任何社区发帖步骤。
 
@@ -24,7 +24,7 @@
 
 连起九宫格里的圆点，用每次反馈推理出隐藏图案。
 
-用鼠标或手指画出路径：白点表示圆点和顺序都对，黑点表示圆点选对、顺序不对。
+用鼠标或手指画出路径：白点表示圆点和顺序都对，空心点表示圆点选对、顺序不对。
 
 从 4、5、6 个点的图案中选择难度，慢慢练习、在 10 次机会内破解，或挑战 60 秒倒计时。
 
@@ -36,7 +36,7 @@
 
 Connect the dots and use each clue to crack the hidden pattern.
 
-Draw a path with your mouse or finger. White clues mean the dot and its position are right; black clues mean the dot is right but its position is wrong.
+Draw a path with your mouse or finger. White clues mean the dot and its position are right; hollow clues mean the dot is right but its position is wrong.
 
 Choose patterns of 4, 5 or 6 dots. Practise without limits, solve a Challenge in 10 attempts, or race a 60-second countdown.
 
@@ -48,7 +48,7 @@ An open-source port of BreakLock by maxwellito, under the MIT license. Original 
 
 点をつなぎ、ヒントを頼りに隠されたパターンを解き明かそう。
 
-マウスや指で線を引きます。白いヒントは点も順番も正解、黒いヒントは点は正しくても順番が違うことを表します。
+マウスや指で線を引きます。白いヒントは点も順番も正解、白い輪のヒントは点は正しくても順番が違うことを表します。
 
 難易度は4・5・6個の点から選択。じっくり練習するもよし、10回以内の解読や60秒のタイムアタックに挑むもよし。
 
@@ -60,7 +60,7 @@ maxwellitoによるBreakLockのオープンソース移植版です。原作のM
 
 점을 잇고 힌트를 추리해 숨겨진 패턴을 풀어 보세요.
 
-마우스나 손가락으로 경로를 그립니다. 흰색 힌트는 점과 순서가 모두 맞다는 뜻이고, 검은색 힌트는 점은 맞지만 순서가 다르다는 뜻입니다.
+마우스나 손가락으로 경로를 그립니다. 흰색 힌트는 점과 순서가 모두 맞다는 뜻이고, 속이 빈 원 모양의 힌트는 점은 맞지만 순서가 다르다는 뜻입니다.
 
 점 4개, 5개, 6개 중 난이도를 고르세요. 제한 없이 연습하거나, 10번 안에 풀기에 도전하거나, 60초 카운트다운을 즐길 수 있습니다.
 
@@ -72,7 +72,7 @@ maxwellito의 BreakLock을 MIT 라이선스에 따라 이식한 오픈 소스 �
 
 Une los puntos y usa las pistas para descifrar el patrón oculto.
 
-Traza un recorrido con el ratón o el dedo. Una pista blanca indica un punto correcto en la posición correcta; una negra, un punto correcto en otra posición.
+Traza un recorrido con el ratón o el dedo. Una pista blanca indica un punto correcto en la posición correcta; una hueca, un punto correcto en otra posición.
 
 Elige patrones de 4, 5 o 6 puntos. Practica sin límites, resuelve el Desafío en 10 intentos o juega contrarreloj durante 60 segundos.
 
@@ -82,7 +82,7 @@ Adaptación de código abierto de BreakLock, de maxwellito, bajo la licencia MIT
 
 原作：[maxwellito/breaklock](https://github.com/maxwellito/breaklock)，冻结基准为 `8dedd3baccc051928b09605db5cb8dae3702d2f3`。本项目是 MIT 开源移植，原作版权为 © 2017 maxwellito。保留根目录 `LICENSE`、`NOTICE` 及第三方许可文件，并随构建产物分发。字体为原作随附的 Roboto Mono Light（该版本为 Apache-2.0），Lucide 语言图标为 ISC；详情见 [asset-provenance.md](asset-provenance.md)。本移植不是原作官方发行版，也不表示原作者背书。
 
-拟公开移植仓库为 [illidan53/breaklock-aiwanna](https://github.com/illidan53/breaklock-aiwanna)，当前仍为 **pending**，本物料任务没有创建或推送仓库。发布前核实其实际可访问状态；不要把拟用地址写成已经公开的事实。
+公开移植仓库为 [illidan53/breaklock-aiwanna](https://github.com/illidan53/breaklock-aiwanna)，已创建并推送 main，GitHub 已返回 PUBLIC。1GP 发布仍为 pending。
 
 ## 排行榜计划
 
@@ -109,7 +109,7 @@ Adaptación de código abierto de BreakLock, de maxwellito, bajo la licencia MIT
 - 图像为本次以 SVG 编写的几何封面插画，不是游戏截图。除系统字体渲染标题外未引入外部美术素材；无字底图不含可见文字。图案使用 6 个点的连续路径，仅表现真实玩法元素，没有伪造游戏界面、分数或奖励。
 - 平台不接受 SVG 作为图片上传候选，所以 `game.json` 指向 PNG；SVG 仅作为本地源文件保存。
 - 主执行代理必须亲自打开并检查主封面和无字底图，检查缩小到卡片尺寸后的可读性后再上传。导入器能读到路径，不等于已完成视觉验证。
-- 本次未制作真实截图或实机视频。它们是可在上线后补齐的可选物料；没有用几何插画冒充截图。主封面、底图、截图和视频分别处理。
+- 已保存并查看四张真实截图：gameplay-menu.png、gameplay-practice.png、gameplay-win.png、gameplay-countdown.png。未录实机视频，可用浏览器工具未提供录屏接口。主封面和底图是插画，不作为截图。
 
 ## 后续发布顺序
 
